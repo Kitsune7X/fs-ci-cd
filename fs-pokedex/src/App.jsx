@@ -1,6 +1,6 @@
 import React from 'react'
-import {Route, Routes, useMatch,} from 'react-router-dom'
-import {useApi} from './useApi'
+import { Route, Routes, useMatch } from 'react-router-dom'
+import { useApi } from './useApi'
 import LoadingSpinner from './LoadingSpinner'
 import ErrorMessage from './ErrorMessage'
 import PokemonPage from './PokemonPage'
