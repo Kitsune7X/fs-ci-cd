@@ -41,7 +41,7 @@ jobs:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     steps:
-      # Check out the current repo first
+      # Check out the current repo first !important
       - uses: actions/checkout@v6
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' }}
