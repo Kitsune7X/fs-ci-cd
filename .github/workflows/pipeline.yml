@@ -33,8 +33,14 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Testing message
+        if: ${{ contains(join(github.event.commits.*.message), '#skip')}}
+        run: echo 'HERE!'
+
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push' }}
+        # Need to config it so that if a commit message contain #skip, it is not deployed
+        if: ${{ !contains(join(github.event.commits.*.message), '#skip') && github.event_name == 'push'}}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   tag_release:
