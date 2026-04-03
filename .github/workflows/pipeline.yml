@@ -23,6 +23,24 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+
+        # Send Discord Notification when the build is failure
+      - name: Build failure notification
+        uses: sarisia/actions-status-discord@v1.16.0
+        if: ${{ failure() }}
+        with:
+          webhook: ${{ secrets.FS_DISCORD_WEBHOOK }}
+          content: '❌Build Failed!'
+          title: 'Failure Details'
+          description: |
+            **Repository**: `${{ github.repository }}`
+            **Branch**: `${{ github.base_ref }}`
+            **Commit**: `${{ github.sha }}`
+            **Message**: `${{ github.event.pull_request.title }}`
+            **Author**: `${{ github.actor }}`
+            **Workflow**: `${{ github.workflow }}`
+            **Job**: `${{ github.job }}`
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
@@ -44,17 +62,18 @@ jobs:
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
       # Send Discord notification
-      - name: Actions Status Discord
+      - name: Successful Deployment Discord Notification
         uses: sarisia/actions-status-discord@v1.16.0
         if: ${{ success() }}
         with:
           webhook: ${{ secrets.FS_DISCORD_WEBHOOK }}
-          content: '#Deployment Successful!'
+          content: '✅Deployment Successful!'
           title: 'Deployment Details'
           description: |
             **Commit**: `${{ github.sha }}`
-            **Message**: `${{ github.event.commits.message }}`
+            **Message**: `${{ github.event.pull_request.title }}`
             **Author**: `${{ github.actor }}`
+          nodetail: true
 
   tag_release:
     needs: [simple_deployment_pipeline]
