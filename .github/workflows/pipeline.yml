@@ -25,6 +25,7 @@ jobs:
         run: npm run build
 
   notify_failure:
+    needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -48,6 +49,7 @@ jobs:
             **Job**: `${{ github.job }}`
 
   deploy:
+    needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -70,6 +72,7 @@ jobs:
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   notify_success:
+    needs: [deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
