@@ -90,7 +90,7 @@ jobs:
           title: 'Deployment Details'
           description: |
             **Commit**: `${{ github.sha }}`
-            **Message**: `${{ github.event.pull_request.title }}`
+            **Message**: `${{ join(github.event.commits.message) }}`
             **Author**: `${{ github.actor }}`
           nodetail: true
 
